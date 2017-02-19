@@ -10,7 +10,7 @@ const port = process.env.PORT || 9090;
 let currentData;
 let io;
 
-app.use(bodyParser.urlencoded({extended: false}))
+app.use(bodyParser.urlencoded({extended: false, limit:'50mb', parameterLimit: 3000000}))
 app.use(express.static(staticPath));
 
 const createHierarchy = obj => {
@@ -56,7 +56,7 @@ const fix = data => {
 
 app.post('/data', (req, res) => {
   // currentData = createHierarchy(fix(req.body));
-  process.stdout.write('data \n');
+  //console.log('received data');
   currentData = fix(req.body);
   res.status(200).end();
   io.sockets.emit('current', {current: currentData});
